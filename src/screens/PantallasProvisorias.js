@@ -9,18 +9,6 @@ function PantallaProvisoria(props) {
   );
 }
 
-function Inicio() {
-  return <PantallaProvisoria titulo="Inicio" texto="Próximamente vas a encontrar películas y series populares." />;
-}
-
-function Peliculas() {
-  return <PantallaProvisoria titulo="Ver todas las películas" texto="Esta sección mostrará más películas y permitirá filtrarlas." />;
-}
-
-function Series() {
-  return <PantallaProvisoria titulo="Ver todas las series" texto="Esta sección mostrará más series y permitirá filtrarlas." />;
-}
-
 function Favoritos() {
   return <PantallaProvisoria titulo="Mis favoritos" texto="Acá se verán tus películas y series favoritas." />;
 }
@@ -33,8 +21,21 @@ function Login() {
   return <PantallaProvisoria titulo="Login" texto="Acá estará el formulario para iniciar sesión." />;
 }
 
+function Resultados(props) {
+  let tipo = props.match.params.tipo === 'pelicula' ? 'películas' : 'series';
+  return <PantallaProvisoria titulo="Resultados de búsqueda" texto={'Acá se buscarán ' + tipo + ' para: ' + props.match.params.busqueda} />;
+}
+
+function DetallePelicula() {
+  return <PantallaProvisoria titulo="Detalle de película" texto="Acá se mostrarán los datos completos de la película elegida." />;
+}
+
+function DetalleSerie() {
+  return <PantallaProvisoria titulo="Detalle de serie" texto="Acá se mostrarán los datos completos de la serie elegida." />;
+}
+
 function NoEncontrada() {
   return <PantallaProvisoria titulo="404" texto="La página que buscás no existe." />;
 }
 
-export { Inicio, Peliculas, Series, Favoritos, CrearCuenta, Login, NoEncontrada };
+export { Favoritos, CrearCuenta, Login, Resultados, DetallePelicula, DetalleSerie, NoEncontrada };
