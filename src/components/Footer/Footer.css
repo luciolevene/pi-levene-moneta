@@ -1,0 +1,11 @@
+footer {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #cfe2ff;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
