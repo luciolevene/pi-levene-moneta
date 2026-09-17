@@ -1,20 +1,3 @@
-nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    background-color: #eee;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-.nav {
-    margin: 0 !important;
-}
-.nav a{
-    color: #444;
-    text-decoration: none;
-}
-.nav a:hover{
-    font-weight: bold;
-}
 .search-form, .filter-form {
     padding: .5rem 0;
     margin-bottom: 20px;
@@ -83,10 +66,4 @@ nav {
 
 .all-movies .single-card-movie {
     width: 15%;
-}
-
-@media(min-width: 765px){
-    nav {
-        grid-template-columns: 1fr;
-    }
 }

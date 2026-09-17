@@ -12,12 +12,11 @@ import DetalleSerie from './screens/DetalleSerie/DetalleSerie';
 import Favoritos from './screens/Favoritos/Favoritos';
 import ResultadosBusqueda from './screens/ResultadosBusqueda/ResultadosBusqueda';
 import NotFound from './screens/NotFound/NotFound';
-import './App.css';
 
 function App() {
   return (
     <React.Fragment>
-      <div className="contenedor-principal">
+      <div className="container">
         <Header />
         <main>
           <Switch>
@@ -33,8 +32,8 @@ function App() {
             <Route component={NotFound} />
           </Switch>
         </main>
-        <Footer />
       </div>
+      <Footer />
     </React.Fragment>
   );
 }

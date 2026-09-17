@@ -1,10 +1,9 @@
 import React from 'react';
-import './Footer.css';
 
 function Footer() {
   return (
-    <footer>
-      <p>Lucio Levene | Halley Moneta</p>
+    <footer className="alert alert-primary mt-4 text-center">
+      <p className="mb-0">Lucio Levene | Halley Moneta</p>
     </footer>
   );
 }

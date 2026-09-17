@@ -9,19 +9,23 @@ function Header() {
   let usuarioEnSesion = cookies.get('user-auth-cookie');
 
   return (
-    <header>
-      <h1><Link to="/">UdeSA Movies</Link></h1>
+    <React.Fragment>
+      <h1>UdeSA Movies</h1>
       <nav>
-        <ul className="menu-navegacion">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/peliculas">Películas</Link></li>
-          <li><Link to="/series">Series</Link></li>
-          {usuarioEnSesion ? <li><Link to="/favoritos">Favoritos</Link></li> : null}
-          {!usuarioEnSesion ? <li className="item-derecha"><Link to="/crear-cuenta">Crear cuenta</Link></li> : null}
-          {!usuarioEnSesion ? <li><Link to="/login">Login</Link></li> : null}
+        <ul className="nav nav-tabs my-4">
+          <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/peliculas">Películas</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/series">Series</Link></li>
+          {usuarioEnSesion ?
+            <li className="nav-item"><Link className="nav-link" to="/favoritos">Favoritos</Link></li> :
+            <React.Fragment>
+              <li className="nav-item ml-auto"><Link className="nav-link" to="/crear-cuenta">Crear cuenta</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
+            </React.Fragment>
+          }
         </ul>
       </nav>
-    </header>
+    </React.Fragment>
   );
 }
 
