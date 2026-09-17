@@ -33,26 +33,17 @@ class Buscador extends Component {
 
   render() {
     return (
-      <section className="buscador">
-        <h2>Buscar contenido</h2>
-        <form className="formulario-busqueda" onSubmit={(event) => this.enviarBusqueda(event)}>
-          <label htmlFor="busqueda">¿Qué querés buscar?</label>
-          <input
-            id="busqueda"
-            type="text"
-            value={this.state.busqueda}
-            onChange={(event) => this.controlarBusqueda(event)}
-            placeholder="Ej.: Batman"
-          />
-          <label htmlFor="tipo">Buscar en</label>
-          <select id="tipo" value={this.state.tipo} onChange={(event) => this.controlarTipo(event)}>
+      <React.Fragment>
+        <form className="search-form" onSubmit={(event) => this.enviarBusqueda(event)}>
+          <input type="text" name="searchData" placeholder="Buscar..." value={this.state.busqueda} onChange={(event) => this.controlarBusqueda(event)} />
+          <select value={this.state.tipo} onChange={(event) => this.controlarTipo(event)}>
             <option value="pelicula">Películas</option>
             <option value="serie">Series</option>
           </select>
-          <button type="submit">Buscar</button>
+          <button type="submit" className="btn btn-success btn-sm">Buscar</button>
         </form>
-        {this.state.error !== '' ? <p className="mensaje-error">{this.state.error}</p> : null}
-      </section>
+        {this.state.error !== '' ? <p className="alert alert-warning">{this.state.error}</p> : ''}
+      </React.Fragment>
     );
   }
 }
