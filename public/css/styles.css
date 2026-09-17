@@ -2,23 +2,17 @@
     padding: .5rem 0;
     margin-bottom: 20px;
     display: grid;
-    grid-template-columns: 5fr 1fr;
-    column-gap: 5px;
-}
-.filter-form {
     grid-template-columns: 1fr;
+    column-gap: 5px;
 }
 .filter-form input {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding-top: 3px;
     vertical-align: middle;
-    line-height: 1;
+    line-height: 1.5;
     font-size: 1rem;
     padding-bottom: 4px;
-}
-.filter-form input {
-    line-height: 1.5;
 }
 .cards {
     padding: 0.75rem 1.25rem;
@@ -28,14 +22,8 @@
     justify-content: space-between;
     margin-bottom: 2%;
 }
-.cardBody {
-    margin-top: 20px;
-}
 .single-card-people {
     width: 19%;
-}
-.single-card-movie {
-    width: 24%;
 }
 .single-card-playing {
     width: 15%;
@@ -43,9 +31,6 @@
 #now-playing .card-text{
     height: 100px;
     overflow: hidden;
-}
-.single-card-tv {
-    width: 19%;
 }
 .tv-show .card-text{
     height: 100px;

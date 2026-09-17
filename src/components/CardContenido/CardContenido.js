@@ -4,72 +4,84 @@ import Cookies from 'universal-cookie';
 import './CardContenido.css';
 
 const cookies = new Cookies();
-const URL_IMAGEN = 'https://image.tmdb.org/t/p/w342';
 
 class CardContenido extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mostrarDescripcion: false,
+      verDescripcion: false,
       esFavorito: false
     };
   }
 
   componentDidMount() {
-    this.actualizarEstadoFavorito();
-  }
-
-  actualizarEstadoFavorito() {
-    let favoritosStorage = localStorage.getItem(this.obtenerClaveFavoritos());
-    let favoritos = favoritosStorage === null ? [] : JSON.parse(favoritosStorage);
-
-    this.setState({ esFavorito: favoritos.indexOf(this.props.datos.id) !== -1 });
-  }
-
-  obtenerClaveFavoritos() {
-    return this.props.tipo === 'pelicula' ? 'favoritosPeliculas' : 'favoritosSeries';
-  }
-
-  cambiarDescripcion() {
-    this.setState({ mostrarDescripcion: !this.state.mostrarDescripcion });
-  }
-
-  cambiarFavorito() {
-    let clave = this.obtenerClaveFavoritos();
-    let favoritosStorage = localStorage.getItem(clave);
-    let favoritos = favoritosStorage === null ? [] : JSON.parse(favoritosStorage);
-    let indiceFavorito = favoritos.indexOf(this.props.datos.id);
-
-    if (indiceFavorito === -1) {
-      favoritos.push(this.props.datos.id);
-    } else {
-      favoritos = favoritos.filter((id) => id !== this.props.datos.id);
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+    if (storage !== null) {
+      let estaEnFavoritos = storage.includes(this.props.datos.id);
+      this.setState({
+        esFavorito: estaEnFavoritos
+      });
     }
+  }
 
-    localStorage.setItem(clave, JSON.stringify(favoritos));
-    this.setState({ esFavorito: favoritos.indexOf(this.props.datos.id) !== -1 });
+  mostrarDescripcion() {
+    if (this.state.verDescripcion) {
+      this.setState({
+        verDescripcion: false
+      });
+    } else {
+      this.setState({
+        verDescripcion: true
+      });
+    }
+  }
+
+  agregarFav(id) {
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+    if (storage !== null) {
+      storage.push(id);
+      let storageString = JSON.stringify(storage);
+      localStorage.setItem('favoritos-' + this.props.tipo, storageString);
+    } else {
+      let nuevoStorage = [id];
+      let storageString = JSON.stringify(nuevoStorage);
+      localStorage.setItem('favoritos-' + this.props.tipo, storageString);
+    }
+    this.setState({
+      esFavorito: true
+    });
+  }
+
+  sacarFav(id) {
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+    let storageFiltrado = storage.filter(idGuardado => idGuardado !== id);
+    let storageString = JSON.stringify(storageFiltrado);
+    localStorage.setItem('favoritos-' + this.props.tipo, storageString);
+    this.setState({
+      esFavorito: false
+    });
   }
 
   render() {
-    let datos = this.props.datos;
-    let titulo = this.props.tipo === 'pelicula' ? datos.title : datos.name;
-    let rutaDetalle = this.props.tipo === 'pelicula' ? '/pelicula/' + datos.id : '/serie/' + datos.id;
+    let titulo = this.props.tipo === 'pelicula' ? this.props.datos.title : this.props.datos.name;
+    let claseTarjeta = this.props.tipo === 'pelicula' ? 'single-card-movie' : 'single-card-tv';
     let usuarioEnSesion = cookies.get('user-auth-cookie');
 
     return (
-      <article className="tarjeta-contenido">
-        {datos.poster_path ? <img src={URL_IMAGEN + datos.poster_path} alt={titulo} /> : <div className="imagen-no-disponible">Imagen no disponible</div>}
-        <div className="cuerpo-tarjeta">
-          <h3>{titulo}</h3>
-          {this.state.mostrarDescripcion ? <p>{datos.overview === '' ? 'Sin descripción disponible.' : datos.overview}</p> : null}
-          <button type="button" onClick={() => this.cambiarDescripcion()}>
-            {this.state.mostrarDescripcion ? 'Ocultar descripción' : 'Ver descripción'}
+      <article className={claseTarjeta}>
+        <img src={'https://image.tmdb.org/t/p/w342' + this.props.datos.poster_path} className="card-img-top" alt={titulo} />
+        <div className="cardBody">
+          <h5 className="card-title">{titulo}</h5>
+          {this.state.verDescripcion ? <p className="card-text">{this.props.datos.overview}</p> : ''}
+          <button className="btn alert-primary" onClick={() => this.mostrarDescripcion()}>
+            {this.state.verDescripcion ? 'Ocultar descripción' : 'Ver descripción'}
           </button>
-          <Link className="enlace-detalle" to={rutaDetalle}>Ir a detalle</Link>
+          <Link className="btn btn-primary" to={'/' + this.props.tipo + '/' + this.props.datos.id}>Ir a detalle</Link>
           {usuarioEnSesion ?
-            <button type="button" onClick={() => this.cambiarFavorito()}>
-              {this.state.esFavorito ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-            </button> : null}
+            this.state.esFavorito ?
+              <button className="btn alert-primary" onClick={() => this.sacarFav(this.props.datos.id)}>♥️</button> :
+              <button className="btn alert-primary" onClick={() => this.agregarFav(this.props.datos.id)}>🩶</button>
+            : ''}
         </div>
       </article>
     );

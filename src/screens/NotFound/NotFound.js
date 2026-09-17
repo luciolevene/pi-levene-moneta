@@ -2,8 +2,8 @@ import React from 'react';
 
 function NotFound() {
   return (
-    <section className="pantalla-provisoria">
-      <h2>Página no encontrada</h2>
+    <section>
+      <h2 className="alert alert-primary">Página no encontrada</h2>
       <p>La página que estás buscando no existe.</p>
     </section>
   );

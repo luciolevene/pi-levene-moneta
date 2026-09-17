@@ -2,8 +2,8 @@ import React from 'react';
 
 function Series() {
   return (
-    <section className="pantalla-provisoria">
-      <h2>Series</h2>
+    <section>
+      <h2 className="alert alert-primary">Series</h2>
       <p>Acá se mostrarán las series disponibles.</p>
     </section>
   );

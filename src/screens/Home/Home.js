@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Buscador from '../../components/Buscador/Buscador';
 import CardContenido from '../../components/CardContenido/CardContenido';
-import './Home.css';
 
 class Home extends Component {
   constructor(props) {
@@ -38,27 +37,23 @@ class Home extends Component {
       <React.Fragment>
         <Buscador />
 
-        <section className="seccion-home">
-          <h2>Películas populares</h2>
+        <h2 className="alert alert-primary">Películas populares</h2>
+        <section className="row cards" id="movies">
           {this.state.peliculas === '' ?
             <p>Cargando...</p> :
-            <div className="grilla-tarjetas">
-              {this.state.peliculas.map((pelicula, idx) => idx < 4 ? <CardContenido key={pelicula.id} datos={pelicula} tipo="pelicula" /> : null)}
-            </div>
+            this.state.peliculas.map((pelicula, idx) => idx < 4 ? <CardContenido key={pelicula.id} datos={pelicula} tipo="pelicula" /> : '')
           }
-          <Link className="ver-todas" to="/peliculas">Ver todas las películas</Link>
         </section>
+        <Link className="btn btn-info mb-3" to="/peliculas">Ver todas las películas</Link>
 
-        <section className="seccion-home">
-          <h2>Series populares</h2>
+        <h2 className="alert alert-warning">Series populares</h2>
+        <section className="row cards" id="tv-show">
           {this.state.series === '' ?
             <p>Cargando...</p> :
-            <div className="grilla-tarjetas">
-              {this.state.series.map((serie, idx) => idx < 4 ? <CardContenido key={serie.id} datos={serie} tipo="serie" /> : null)}
-            </div>
+            this.state.series.map((serie, idx) => idx < 4 ? <CardContenido key={serie.id} datos={serie} tipo="serie" /> : '')
           }
-          <Link className="ver-todas" to="/series">Ver todas las series</Link>
         </section>
+        <Link className="btn btn-info mb-3" to="/series">Ver todas las series</Link>
       </React.Fragment>
     );
   }
