@@ -60,6 +60,10 @@ class CardContenido extends Component {
     this.setState({
       esFavorito: false
     });
+
+    if (this.props.borrar !== undefined) {
+      this.props.borrar(id);
+    }
   }
 
   render() {
