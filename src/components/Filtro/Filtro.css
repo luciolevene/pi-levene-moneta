@@ -1,0 +1,16 @@
+.filter-form {
+    padding: .5rem 0;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 5px;
+}
+.filter-form input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding-top: 3px;
+    vertical-align: middle;
+    line-height: 1.5;
+    font-size: 1rem;
+    padding-bottom: 4px;
+}
