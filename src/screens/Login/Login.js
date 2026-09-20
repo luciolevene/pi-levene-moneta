@@ -4,7 +4,7 @@ function Login() {
   return (
     <section>
       <h2 className="alert alert-primary">Login</h2>
-      <p></p>
+      <p>Acá estará el formulario de inicio de sesión.</p>
     </section>
   );
 }
