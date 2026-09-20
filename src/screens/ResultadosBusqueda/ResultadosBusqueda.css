@@ -1,0 +1,21 @@
+.resultados-busqueda .single-card-movie {
+    width: 24%;
+}
+
+.resultados-busqueda .single-card-tv {
+    width: 19%;
+}
+
+@media(max-width: 764px) {
+    .resultados-busqueda .single-card-movie,
+    .resultados-busqueda .single-card-tv {
+        width: 48%;
+    }
+}
+
+@media(max-width: 480px) {
+    .resultados-busqueda .single-card-movie,
+    .resultados-busqueda .single-card-tv {
+        width: 100%;
+    }
+}

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import CardContenido from '../../components/CardContenido/CardContenido';
+import './ResultadosBusqueda.css';
 
 class ResultadosBusqueda extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      resultados: ''
+      resultados: '',
+      error: false
     };
   }
 
@@ -23,12 +25,14 @@ class ResultadosBusqueda extends Component {
     fetch(url)
       .then(response => response.json())
       .then(data => this.setState({
-        resultados: data.results === undefined ? [] : data.results
+        resultados: data.results === undefined ? [] : data.results,
+        error: false
       }))
       .catch(error => {
         console.log('El error fue: ' + error);
         this.setState({
-          resultados: []
+          resultados: [],
+          error: true
         });
       });
   }
@@ -41,25 +45,27 @@ class ResultadosBusqueda extends Component {
     let idSeccion = esPelicula ? 'movies' : 'tv-show';
 
     return (
-      <React.Fragment>
+      <section className="resultados-busqueda">
         <h2 className={esPelicula ? 'alert alert-primary' : 'alert alert-warning'}>
           Resultados de {nombreTipo} para: {busqueda}
         </h2>
         {this.state.resultados === '' ?
           <p>Cargando...</p> :
-          this.state.resultados.length === 0 ?
-            <p>No se encontraron resultados.</p> :
-            <section className="row cards" id={idSeccion}>
-              {this.state.resultados.map(resultado =>
-                <CardContenido
-                  key={resultado.id}
-                  datos={resultado}
-                  tipo={tipo}
-                />
-              )}
-            </section>
+          this.state.error ?
+            <p className="alert alert-warning">No se pudieron cargar los resultados.</p> :
+            this.state.resultados.length === 0 ?
+              <p>No se encontraron resultados.</p> :
+              <section className="row cards" id={idSeccion}>
+                {this.state.resultados.map(resultado =>
+                  <CardContenido
+                    key={resultado.id}
+                    datos={resultado}
+                    tipo={tipo}
+                  />
+                )}
+              </section>
         }
-      </React.Fragment>
+      </section>
     );
   }
 }
