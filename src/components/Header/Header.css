@@ -21,3 +21,12 @@ nav {
         grid-template-columns: 1fr;
     }
 }
+
+@media(max-width: 480px){
+    li.nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

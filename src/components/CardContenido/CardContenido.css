@@ -11,3 +11,20 @@
     margin-right: 5px;
     margin-bottom: 5px;
 }
+
+@media(max-width: 768px){
+    .single-card-movie,
+    .single-card-tv,
+    .all-movies .single-card-movie,
+    .all-series .single-card-tv {
+        width: 48%;
+    }
+}
+@media(max-width: 480px){
+    .single-card-movie,
+    .single-card-tv,
+    .all-movies .single-card-movie,
+    .all-series .single-card-tv {
+        width: 48%;
+    }
+}
