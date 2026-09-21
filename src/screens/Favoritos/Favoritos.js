@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import CardContenido from '../../components/CardContenido/CardContenido';
+import Loader from '../../components/Loader/Loader';
 
 const cookies = new Cookies();
 
@@ -84,7 +85,7 @@ class Favoritos extends Component {
       <React.Fragment>
         <h2 className="alert alert-primary">Películas favoritas</h2>
         {this.state.peliculas === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           this.state.peliculas.length === 0 ?
             <p>Todavía no agregaste películas a favoritos</p> :
             <section className="row cards" id="movies">
@@ -93,7 +94,7 @@ class Favoritos extends Component {
         }
         <h2 className="alert alert-warning">Series favoritas</h2>
         {this.state.series === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           this.state.series.length === 0 ?
             <p>Todavía no agregaste series a favoritos</p> :
             <section className="row cards" id="tv-show">

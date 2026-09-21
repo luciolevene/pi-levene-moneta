@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
+import Loader from '../../components/Loader/Loader';
 
 const cookies = new Cookies();
 
@@ -70,7 +71,7 @@ class DetalleSerie extends Component {
     return (
       <React.Fragment>
         {this.state.serie === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           <React.Fragment>
             <h2 className="alert alert-warning">{this.state.serie.name}</h2>
             <section className="row">

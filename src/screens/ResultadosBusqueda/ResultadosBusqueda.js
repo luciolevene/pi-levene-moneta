@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CardContenido from '../../components/CardContenido/CardContenido';
-import './ResultadosBusqueda.css';
+import Loader from '../../components/Loader/Loader';
 
 class ResultadosBusqueda extends Component {
   constructor(props) {
@@ -45,12 +45,12 @@ class ResultadosBusqueda extends Component {
     let idSeccion = esPelicula ? 'movies' : 'tv-show';
 
     return (
-      <section className="resultados-busqueda">
+      <section>
         <h2 className={esPelicula ? 'alert alert-primary' : 'alert alert-warning'}>
           Resultados de {nombreTipo} para: {busqueda}
         </h2>
         {this.state.resultados === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           this.state.error ?
             <p className="alert alert-warning">No se pudieron cargar los resultados.</p> :
             this.state.resultados.length === 0 ?

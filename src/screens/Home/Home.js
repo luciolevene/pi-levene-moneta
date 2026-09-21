@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Buscador from '../../components/Buscador/Buscador';
 import CardContenido from '../../components/CardContenido/CardContenido';
+import Loader from '../../components/Loader/Loader';
 
 class Home extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class Home extends Component {
         <h2 className="alert alert-primary">Películas populares</h2>
         <section className="row cards" id="movies">
           {this.state.peliculas === '' ?
-            <p>Cargando...</p> :
+            <Loader /> :
             this.state.peliculas.map((pelicula, idx) => idx < 4 ? <CardContenido key={pelicula.id} datos={pelicula} tipo="pelicula" /> : '')
           }
         </section>
@@ -49,7 +50,7 @@ class Home extends Component {
         <h2 className="alert alert-warning">Series populares</h2>
         <section className="row cards" id="tv-show">
           {this.state.series === '' ?
-            <p>Cargando...</p> :
+            <Loader /> :
             this.state.series.map((serie, idx) => idx < 4 ? <CardContenido key={serie.id} datos={serie} tipo="serie" /> : '')
           }
         </section>

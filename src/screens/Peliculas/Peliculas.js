@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Filtro from '../../components/Filtro/Filtro';
 import CardContenido from '../../components/CardContenido/CardContenido';
+import Loader from '../../components/Loader/Loader';
 
 class Peliculas extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Peliculas extends Component {
         <h2 className="alert alert-primary">Todas las películas</h2>
         <Filtro filtrar={(textoAFiltrar) => this.filtrarPeliculas(textoAFiltrar)} />
         {this.state.peliculas === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           this.state.peliculasFiltradas.length === 0 ?
             <p>No hay películas que coincidan con la búsqueda</p> :
             <section className="row cards all-movies" id="movies">

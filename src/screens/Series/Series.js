@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Filtro from '../../components/Filtro/Filtro';
 import CardContenido from '../../components/CardContenido/CardContenido';
+import Loader from '../../components/Loader/Loader';
 
 class Series extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Series extends Component {
         <h2 className="alert alert-warning">Todas las series</h2>
         <Filtro filtrar={(textoAFiltrar) => this.filtrarSeries(textoAFiltrar)} />
         {this.state.series === '' ?
-          <p>Cargando...</p> :
+          <Loader /> :
           this.state.seriesFiltradas.length === 0 ?
             <p>No hay series que coincidan con la búsqueda</p> :
             <section className="row cards all-series" id="series">
