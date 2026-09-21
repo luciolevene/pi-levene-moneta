@@ -8,11 +8,14 @@ nav {
 .nav {
     margin: 0 !important;
 }
-.nav a{
+.nav a,
+.nav button{
     color: #444;
     text-decoration: none;
+    cursor: pointer;
 }
-.nav a:hover{
+.nav a:hover,
+.nav button:hover{
     font-weight: bold;
 }
 
