@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-class FormRegister extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      error: ''
-    };
+function FormRegister(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  function controlarEmail(event) {
+    setEmail(event.target.value);
   }
 
-  controlarEmail(event) {
-    this.setState({ email: event.target.value });
+  function controlarPassword(event) {
+    setPassword(event.target.value);
   }
 
-  controlarPassword(event) {
-    this.setState({ password: event.target.value });
-  }
-
-  submit(event) {
+  function submit(event) {
     event.preventDefault();
 
     let usuarioACrear = {
-      email: this.state.email,
-      password: this.state.password
+      email: email,
+      password: password
     };
 
-    if (this.state.password.length < 6) {
-      this.setState({ error: 'La contraseña debe tener un mínimo de 6 caracteres' });
+    if (password.length < 6) {
+      setError('La contraseña debe tener un mínimo de 6 caracteres');
       return;
     }
 
@@ -36,13 +32,13 @@ class FormRegister extends Component {
 
     if (usersStorage !== null) {
       let usersParseado = JSON.parse(usersStorage);
-      let emailIngresado = this.state.email;
+      let emailIngresado = email;
       let usersFiltrado = usersParseado.filter(function(user) {
         return user.email === emailIngresado;
       });
 
       if (usersFiltrado.length > 0) {
-        this.setState({ error: 'Ya existe un usuario con el email ingresado' });
+        setError('Ya existe un usuario con el email ingresado');
         return;
       }
 
@@ -55,31 +51,29 @@ class FormRegister extends Component {
       localStorage.setItem('users', usersEnJson);
     }
 
-    this.setState({ error: '' });
-    this.props.history.push('/login');
+    setError('');
+    props.history.push('/login');
   }
 
-  render() {
-    return (
-      <div className="row justify-content-center">
+  return (
+    <div className="row justify-content-center">
         <div className="col-md-6">
-          <form onSubmit={(event) => this.submit(event)}>
+          <form onSubmit={(event) => submit(event)}>
             <div className="form-group">
               <label>Email</label>
-              <input type="email" className="form-control" placeholder="Ingresá tu email" value={this.state.email} onChange={(event) => this.controlarEmail(event)} />
+              <input type="email" className="form-control" placeholder="Ingresá tu email" value={email} onChange={(event) => controlarEmail(event)} />
             </div>
             <div className="form-group">
               <label>Contraseña</label>
-              <input type="password" className="form-control" placeholder="Ingresá tu contraseña" value={this.state.password} onChange={(event) => this.controlarPassword(event)} />
+              <input type="password" className="form-control" placeholder="Ingresá tu contraseña" value={password} onChange={(event) => controlarPassword(event)} />
             </div>
             <button type="submit" className="btn btn-primary btn-block">Registrarse</button>
           </form>
-          {this.state.error !== '' ? <p className="alert alert-warning">{this.state.error}</p> : ''}
+          {error !== '' ? <p className="alert alert-warning">{error}</p> : ''}
           <p className="mt-3 text-center">¿Ya tenés cuenta? <Link to="/login">Iniciar sesión</Link></p>
         </div>
       </div>
     );
-  }
 }
 
 export default withRouter(FormRegister);

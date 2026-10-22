@@ -1,73 +1,66 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import Filtro from '../../components/Filtro/Filtro';
 import CardContenido from '../../components/CardContenido/CardContenido';
 import Loader from '../../components/Loader/Loader';
 
-class Peliculas extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      peliculas: '',
-      peliculasFiltradas: '',
-      textoAFiltrar: '',
-      pagina: 1
-    };
-  }
+function Peliculas(props) {
 
-  componentDidMount() {
+  const [peliculas, setPeliculas] = useState('');
+  const [peliculasFiltradas, setPeliculasFiltradas] = useState('');
+  const [textoAFiltrar, setTextoAFiltrar] = useState('');
+  const [pagina, setPagina] = useState(1);
+
+  useEffect(() => {
     fetch('https://api.themoviedb.org/3/movie/popular?api_key=3aafe306dbd0b67f8ff7460bcfc29518&language=es-AR&page=1')
       .then(response => response.json())
-      .then(data => this.setState({
-        peliculas: data.results,
-        peliculasFiltradas: data.results
-      }))
+      .then(data => {
+        setPeliculas(data.results);
+        setPeliculasFiltradas(data.results);
+      })
       .catch(function(error) {
         console.log('El error fue: ' + error);
       });
-  }
+  }, []);
 
-  cargarMas() {
-    let paginaSiguiente = this.state.pagina + 1;
+  function cargarMas() {
+    let paginaSiguiente = pagina + 1;
 
     fetch('https://api.themoviedb.org/3/movie/popular?api_key=3aafe306dbd0b67f8ff7460bcfc29518&language=es-AR&page=' + paginaSiguiente)
       .then(response => response.json())
       .then(data => {
-        let todasLasPeliculas = this.state.peliculas.concat(data.results);
-        this.setState({
-          peliculas: todasLasPeliculas,
-          peliculasFiltradas: todasLasPeliculas.filter(pelicula => pelicula.title.toLowerCase().includes(this.state.textoAFiltrar.toLowerCase())),
-          pagina: paginaSiguiente
-        });
+        let idsActuales = peliculas.map(pelicula => pelicula.id);
+        let peliculasNuevas = data.results.filter(pelicula => idsActuales.includes(pelicula.id) === false);
+        let todasLasPeliculas = peliculas.concat(peliculasNuevas);
+        setPeliculas(todasLasPeliculas);
+        setPeliculasFiltradas(todasLasPeliculas.filter(pelicula => pelicula.title.toLowerCase().includes(textoAFiltrar.toLowerCase())));
+        setPagina(paginaSiguiente);
       })
       .catch(function(error) {
         console.log('El error fue: ' + error);
       });
   }
 
-  filtrarPeliculas(textoAFiltrar) {
-    this.setState({
-      textoAFiltrar: textoAFiltrar,
-      peliculasFiltradas: this.state.peliculas.filter(pelicula => pelicula.title.toLowerCase().includes(textoAFiltrar.toLowerCase()))
-    });
+  function filtrarPeliculas(textoAFiltrar) {
+    setTextoAFiltrar(textoAFiltrar);
+    setPeliculasFiltradas(peliculas.filter(pelicula => pelicula.title.toLowerCase().includes(textoAFiltrar.toLowerCase())));
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <h2 className="alert alert-primary">Todas las películas</h2>
-        <Filtro filtrar={(textoAFiltrar) => this.filtrarPeliculas(textoAFiltrar)} />
-        {this.state.peliculas === '' ?
-          <Loader /> :
-          this.state.peliculasFiltradas.length === 0 ?
-            <p>No hay películas que coincidan con la búsqueda</p> :
-            <section className="row cards all-movies" id="movies">
-              {this.state.peliculasFiltradas.map(pelicula => <CardContenido key={pelicula.id} datos={pelicula} tipo="pelicula" />)}
-            </section>
-        }
-        <button className="btn btn-info mb-3" onClick={() => this.cargarMas()}>Cargar más</button>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <h2 className="alert alert-primary">Todas las películas</h2>
+      <Filtro filtrar={(textoAFiltrar) => filtrarPeliculas(textoAFiltrar)} />
+      {peliculas === '' ?
+        <Loader /> :
+        peliculasFiltradas.length === 0 ?
+          <p>No hay películas que coincidan con la búsqueda</p> :
+          <section className="row cards all-movies" id="movies">
+            {peliculasFiltradas.map(pelicula => <CardContenido key={pelicula.id} datos={pelicula} tipo="pelicula" />)}
+          </section>
+      }
+      <button className="btn btn-info mb-3" onClick={() => cargarMas()}>Cargar más</button>
+    </React.Fragment>
+  );
 }
 
 export default Peliculas;

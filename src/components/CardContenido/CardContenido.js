@@ -1,95 +1,80 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import './CardContenido.css';
 
 const cookies = new Cookies();
 
-class CardContenido extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      verDescripcion: false,
-      esFavorito: false
-    };
-  }
+function CardContenido(props) {
+  const [verDescripcion, setVerDescripcion] = useState(false);
+  const [esFavorito, setEsFavorito] = useState(false);
 
-  componentDidMount() {
-    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+  useEffect(() => {
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + props.tipo));
     if (storage !== null) {
-      let estaEnFavoritos = storage.includes(this.props.datos.id);
-      this.setState({
-        esFavorito: estaEnFavoritos
-      });
+      let estaEnFavoritos = storage.includes(props.datos.id);
+      setEsFavorito(estaEnFavoritos);
     }
-  }
+  }, [props.tipo, props.datos.id]);
 
-  mostrarDescripcion() {
-    if (this.state.verDescripcion) {
-      this.setState({
-        verDescripcion: false
-      });
+  function mostrarDescripcion() {
+    if (verDescripcion) {
+      setVerDescripcion(false);
     } else {
-      this.setState({
-        verDescripcion: true
-      });
+      setVerDescripcion(true);
     }
   }
 
-  agregarFav(id) {
-    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+  function agregarFav(id) {
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + props.tipo));
     if (storage !== null) {
       storage.push(id);
       let storageString = JSON.stringify(storage);
-      localStorage.setItem('favoritos-' + this.props.tipo, storageString);
+      localStorage.setItem('favoritos-' + props.tipo, storageString);
     } else {
       let nuevoStorage = [id];
       let storageString = JSON.stringify(nuevoStorage);
-      localStorage.setItem('favoritos-' + this.props.tipo, storageString);
+      localStorage.setItem('favoritos-' + props.tipo, storageString);
     }
-    this.setState({
-      esFavorito: true
-    });
+    setEsFavorito(true);
   }
 
-  sacarFav(id) {
-    let storage = JSON.parse(localStorage.getItem('favoritos-' + this.props.tipo));
+  function sacarFav(id) {
+    let storage = JSON.parse(localStorage.getItem('favoritos-' + props.tipo));
     let storageFiltrado = storage.filter(idGuardado => idGuardado !== id);
     let storageString = JSON.stringify(storageFiltrado);
-    localStorage.setItem('favoritos-' + this.props.tipo, storageString);
-    this.setState({
-      esFavorito: false
-    });
+    localStorage.setItem('favoritos-' + props.tipo, storageString);
+    setEsFavorito(false);
 
-    if (this.props.borrar !== undefined) {
-      this.props.borrar(id);
+    if (props.borrar !== undefined) {
+      props.borrar(id);
     }
   }
 
-  render() {
-    let titulo = this.props.tipo === 'pelicula' ? this.props.datos.title : this.props.datos.name;
-    let claseTarjeta = this.props.tipo === 'pelicula' ? 'single-card-movie' : 'single-card-tv';
-    let usuarioEnSesion = cookies.get('user-auth-cookie');
+
+  let titulo = props.tipo === 'pelicula' ? props.datos.title : props.datos.name;
+  let claseTarjeta = props.tipo === 'pelicula' ? 'single-card-movie' : 'single-card-tv';
+  let usuarioEnSesion = cookies.get('user-auth-cookie');
 
     return (
       <article className={claseTarjeta}>
-        <img src={'https://image.tmdb.org/t/p/w342' + this.props.datos.poster_path} className="card-img-top" alt={titulo} />
+        <img src={'https://image.tmdb.org/t/p/w342' + props.datos.poster_path} className="card-img-top" alt={titulo} />
         <div className="cardBody">
           <h5 className="card-title">{titulo}</h5>
-          {this.state.verDescripcion ? <p className="card-text">{this.props.datos.overview}</p> : ''}
-          <button className="btn alert-primary" onClick={() => this.mostrarDescripcion()}>
-            {this.state.verDescripcion ? 'Ocultar descripción' : 'Ver descripción'}
+          {verDescripcion ? <p className="card-text">{props.datos.overview}</p> : ''}
+          <button className="btn alert-primary" onClick={() => mostrarDescripcion()}>
+            {verDescripcion ? 'Ocultar descripción' : 'Ver descripción'}
           </button>
-          <Link className="btn btn-primary" to={'/' + this.props.tipo + '/' + this.props.datos.id}>Ir a detalle</Link>
+          <Link className="btn btn-primary" to={'/' + props.tipo + '/' + props.datos.id}>Ir a detalle</Link>
           {usuarioEnSesion ?
-            this.state.esFavorito ?
-              <button className="btn alert-primary" onClick={() => this.sacarFav(this.props.datos.id)}>♥️</button> :
-              <button className="btn alert-primary" onClick={() => this.agregarFav(this.props.datos.id)}>🩶</button>
+            esFavorito ?
+              <button className="btn alert-primary" onClick={() => sacarFav(props.datos.id)}>♥️</button> :
+              <button className="btn alert-primary" onClick={() => agregarFav(props.datos.id)}>🩶</button>
             : ''}
         </div>
       </article>
     );
   }
-}
 
 export default CardContenido;

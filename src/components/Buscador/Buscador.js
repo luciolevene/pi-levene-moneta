@@ -1,51 +1,46 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Buscador.css';
 
-class Buscador extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      busqueda: '',
-      tipo: 'pelicula',
-      error: ''
-    };
+function Buscador(props) {
+  const [busqueda, setBusqueda] = useState('');
+  const [tipo, setTipo] = useState('pelicula');
+  const [error, setError] = useState('');
+
+  function controlarBusqueda(event) {
+    setBusqueda(event.target.value);
   }
 
-  controlarBusqueda(event) {
-    this.setState({ busqueda: event.target.value });
+  function controlarTipo(event) {
+    setTipo(event.target.value);
   }
 
-  controlarTipo(event) {
-    this.setState({ tipo: event.target.value });
-  }
-
-  enviarBusqueda(event) {
+  function enviarBusqueda(event) {
     event.preventDefault();
 
-    if (this.state.busqueda === '') {
-      this.setState({ error: 'Ingresá una película o serie para buscar.' });
+    if (busqueda === '') {
+      setError('Ingresá una película o serie para buscar.');
     } else {
-      this.setState({ error: '' });
-      this.props.history.push('/resultados/' + this.state.tipo + '/' + this.state.busqueda);
+      setError('');
+      props.history.push('/resultados/' + tipo + '/' + busqueda);
     }
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <form className="search-form" onSubmit={(event) => this.enviarBusqueda(event)}>
-          <input type="text" name="searchData" placeholder="Buscar..." value={this.state.busqueda} onChange={(event) => this.controlarBusqueda(event)} />
-          <select value={this.state.tipo} onChange={(event) => this.controlarTipo(event)}>
+  return (
+    <div>
+      <form className="search-form" onSubmit={(event) => enviarBusqueda(event)}>
+        <input type="text" name="searchData" placeholder="Buscar..." value={busqueda} onChange={(event) => controlarBusqueda(event)} />
+        <select value={tipo} onChange={(event) => controlarTipo(event)}>
             <option value="pelicula">Películas</option>
             <option value="serie">Series</option>
           </select>
           <button type="submit" className="btn btn-success btn-sm">Buscar</button>
         </form>
-        {this.state.error !== '' ? <p className="alert alert-warning">{this.state.error}</p> : ''}
-      </React.Fragment>
+        {error !== '' ? <p className="alert alert-warning">{error}</p> : ''}
+      </div>
     );
   }
-}
+
 
 export default withRouter(Buscador);
